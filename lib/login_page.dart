@@ -31,18 +31,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget _googleSignInButton() {
     return OutlineButton(
       splashColor: Colors.grey,
-      onPressed: () {
-        Authentication().signInWithGoogle().then((value)
-        {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) {
-                return FirstScreen(user: value);
-              },
-            ),
-          );
-        });
-      },
+      onPressed: () {_signInGoogle(); },
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
       highlightElevation: 0,
       borderSide: BorderSide(color: Colors.grey),
@@ -52,27 +41,31 @@ class _LoginPageState extends State<LoginPage> {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Image(image: AssetImage("images/google_logo.png"), height: 35.0),
-            Padding(
-              padding: const EdgeInsets.only(left: 10),
-              child: Text(
-                'Sign in with Google',
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.grey,
-                ),
-              ),
-            )
+            _displayAssetImage("images/google_logo.png", 35),
+            _displayButtonText('Sign in with Google')
           ],
         ),
       ),
     );
   }
 
+  _signInGoogle()
+  {
+    Authentication().signInWithGoogle().then((value) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) {
+            return FirstScreen(user: value);
+          },
+        ),
+      );
+    });
+  }
+
   Widget _facebookSignInButton() {
     return OutlineButton(
       splashColor: Colors.grey,
-      onPressed: () {},
+      onPressed: () {_signInFacebook();},
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular((40))),
       highlightElevation: 0,
       borderSide: BorderSide(color: Colors.grey),
@@ -82,18 +75,44 @@ class _LoginPageState extends State<LoginPage> {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Image(image: AssetImage("images/facebook_logo.png"), height: 40.0, color: Colors.blue,),
-            Padding(
-              padding: const EdgeInsets.only(left: 10),
-              child: Text(
-                "Sign in with Facebook",
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.grey,
-                ),
-              ),
-            )
+            _displayAssetImage("images/facebook_logo.png", 40),
+            _displayButtonText("Sign in with Facebook")
           ],
+        ),
+      ),
+    );
+  }
+
+  _signInFacebook()
+  {
+    Authentication().signInWithFacebook().then((value) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) {
+            return FirstScreen(user: value);
+          },
+        ),
+      );
+    });
+  }
+
+  _displayAssetImage(String image, double size)
+  {
+    return Image(
+      image: AssetImage(image),
+      height: size,
+    );
+  }
+
+  _displayButtonText(String txt)
+  {
+    return Padding(
+      padding: const EdgeInsets.only(left: 10),
+      child: Text(
+        txt,
+        style: TextStyle(
+          fontSize: 20,
+          color: Colors.grey,
         ),
       ),
     );

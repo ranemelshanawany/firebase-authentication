@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class FirstScreen extends StatelessWidget {
   final FirebaseUser user;
+
   FirstScreen({Key key, @required this.user}) : super(key: key);
 
   @override
@@ -23,65 +24,78 @@ class FirstScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
-              CircleAvatar(
-                backgroundImage: NetworkImage(
-                  user.photoUrl,
-                ),
-                radius: 60,
-                backgroundColor: Colors.transparent,
-              ),
+              _displayImage(),
               SizedBox(height: 40),
-              Text(
-                'NAME',
-                style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black54),
-              ),
-              Text(
-                user.displayName,
-                style: TextStyle(
-                    fontSize: 25,
-                    color: Colors.deepPurple,
-                    fontWeight: FontWeight.bold),
-              ),
+              _displayTitleText("NAME"),
+              _displayDetailsText(user.displayName),
               SizedBox(height: 20),
-              Text(
-                'EMAIL',
-                style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black54),
-              ),
-              Text(
-                user.email,
-                style: TextStyle(
-                    fontSize: 25,
-                    color: Colors.deepPurple,
-                    fontWeight: FontWeight.bold),
-              ),
+              _displayTitleText("EMAIL"),
+              _displayDetailsText(user.email),
               SizedBox(height: 40),
-              RaisedButton(
-                onPressed: () {
-                  Authentication().signOutGoogle();
-                  Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) {return LoginPage();}), ModalRoute.withName('/'));
-                },
-                color: Colors.deepPurple,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    'Sign Out',
-                    style: TextStyle(fontSize: 25, color: Colors.white),
-                  ),
-                ),
-                elevation: 5,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(40)),
-              )
+              _buildSignOutButton(context)
             ],
           ),
         ),
       ),
     );
+  }
+
+  _displayImage() {
+    return CircleAvatar(
+      backgroundImage: NetworkImage(
+        user.photoUrl,
+      ),
+      radius: 60,
+      backgroundColor: Colors.transparent,
+    );
+  }
+
+  _displayTitleText(String txt) {
+    return Text(
+      txt,
+      style: TextStyle(
+          fontSize: 15,
+          fontWeight: FontWeight.bold,
+          color: Colors.black54),
+    );
+  }
+
+  _displayDetailsText(String txt) {
+    return Text(
+        txt,
+        style: TextStyle(
+        fontSize: 25,
+        fontWeight: FontWeight.bold,
+        color: Colors.deepPurple,)
+    );
+  }
+
+  _buildSignOutButton(context)
+  {
+    return RaisedButton(
+      onPressed: () {
+        _returnToLogin(context);
+      },
+      color: Colors.deepPurple,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(
+          'Sign Out',
+          style: TextStyle(fontSize: 25, color: Colors.white),
+        ),
+      ),
+      elevation: 5,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(40)),
+    );
+  }
+
+  _returnToLogin(context)
+  {
+    Authentication().signOut();
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) {
+          return LoginPage();
+        }), ModalRoute.withName('/'));
   }
 }
