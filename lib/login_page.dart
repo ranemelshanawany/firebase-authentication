@@ -18,9 +18,9 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              FlutterLogo(size: 150),
-              SizedBox(height: 50),
-              _signInButton(),
+              _googleSignInButton(),
+              SizedBox(height: 10),
+              _facebookSignInButton(),
             ],
           ),
         ),
@@ -28,11 +28,11 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _signInButton() {
+  Widget _googleSignInButton() {
     return OutlineButton(
       splashColor: Colors.grey,
       onPressed: () {
-        GoogleAuth().signInWithGoogle().then((value)
+        Authentication().signInWithGoogle().then((value)
         {
           Navigator.of(context).push(
             MaterialPageRoute(
@@ -57,6 +57,36 @@ class _LoginPageState extends State<LoginPage> {
               padding: const EdgeInsets.only(left: 10),
               child: Text(
                 'Sign in with Google',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.grey,
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _facebookSignInButton() {
+    return OutlineButton(
+      splashColor: Colors.grey,
+      onPressed: () {},
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular((40))),
+      highlightElevation: 0,
+      borderSide: BorderSide(color: Colors.grey),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Image(image: AssetImage("images/facebook_logo.png"), height: 40.0, color: Colors.blue,),
+            Padding(
+              padding: const EdgeInsets.only(left: 10),
+              child: Text(
+                "Sign in with Facebook",
                 style: TextStyle(
                   fontSize: 20,
                   color: Colors.grey,
